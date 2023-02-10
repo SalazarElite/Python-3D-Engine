@@ -5,13 +5,19 @@ from numba import njit
 
 @njit(fastmath=True)
 def any_f(arr, p1, p2):
-    return np.any((arr == p1) or (arr == p2))
+    return np.any((arr == p1) | (arr == p2))
 
 
 class Object:
     def __init__(self, render, filename):
         self.render = render
         self.vertices, self.faces = Object.load(self, filename)
+        self.translate([0.0001, 0.0001, 0.0001])
+
+        self.font = pg.font.SysFont('Arial', 30, bold=True)
+        self.color_faces = [(pg.Color('orange'), face) for face in self.faces]
+        self.movement_flag, self.draw_vertices = True, False
+        self.label = ''
 
     def load(self, filename):
         vertex, faces = [], []
@@ -39,14 +45,14 @@ class Object:
         vertices = self.vertices @ self.render.camera.camera_matrix()
         vertices = vertices @ self.render.projection.projection_matrix
         vertices /= vertices[:, -1].reshape(-1, 1)
-        vertices[(vertices > 2) or (vertices < -2)] = 0
+        vertices[(vertices > 2) | (vertices < -2)] = 0
         vertices = vertices @ self.render.projection.to_screen_matrix
         vertices = vertices[:, :2]
 
         for index, color_face in enumerate(self.color_faces):
             color, face = color_face
             triangle = vertices[face]
-            if not any_f(triangle, self.render.H_WIDTH, self.render.W_HEIGHT):
+            if not any_f(triangle, self.render.H_WIDTH, self.render.H_HEIGHT):
                 pg.draw.polygon(self.render.screen, color, triangle, 1)
                 if self.label:
                     text = self.font.render(self.label[index], True, pg.Color("white"))
