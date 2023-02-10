@@ -8,41 +8,41 @@ def translate(pos):
         [1, 0, 0, 0],
         [0, 1, 0, 0],
         [0, 0, 1, 0],
-        [tx, ty, tz, 1],
+        [tx, ty, tz, 1]
     ])
 
 
-def rotate_x(angle):
+def rotate_x(a):
     return np.array([
         [1, 0, 0, 0],
-        [0, math.cos(angle), math.sin(angle), 0],
-        [0, math.sin(angle)*-1, math.cos(angle), 0],
+        [0, math.cos(a), math.sin(a), 0],
+        [0, -math.sin(a), math.cos(a), 0],
         [0, 0, 0, 1]
     ])
 
 
-def rotate_y(angle):
+def rotate_y(a):
     return np.array([
-        [math.cos(angle), 0, math.sin(angle)*-1, 0],
+        [math.cos(a), 0, -math.sin(a), 0],
         [0, 1, 0, 0],
-        [0, math.sin(angle), 0, math.cos(angle)],
+        [math.sin(a), 0, math.cos(a), 0],
         [0, 0, 0, 1]
     ])
 
 
-def rotate_z(angle):
+def rotate_z(a):
     return np.array([
-        [math.cos(angle), math.sin(angle), 0, 0],
-        [math.sin(angle)*-1, math.cos(angle), 0, 0],
+        [math.cos(a), math.sin(a), 0, 0],
+        [-math.sin(a), math.cos(a), 0, 0],
         [0, 0, 1, 0],
         [0, 0, 0, 1]
     ])
 
 
-def scale(size):
+def scale(n):
     return np.array([
-        [size, 0, 0, 0],
-        [0, size, 0, 0],
-        [0, 0, size, 0],
+        [n, 0, 0, 0],
+        [0, n, 0, 0],
+        [0, 0, n, 0],
         [0, 0, 0, 1]
     ])
